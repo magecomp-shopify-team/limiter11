@@ -1,0 +1,41 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "01fc63baa1b099847c49460e0fedb87b"
+application_url = "https://everything-locate-tourist-steering.trycloudflare.com"
+embedded = true
+name = "limiter11"
+handle = "limiter11"
+
+[build]
+
+[webhooks]
+api_version = "2025-01"
+
+  [[webhooks.subscriptions]]
+  uri = "/webhook/customers-data-request"
+  compliance_topics = [ "customers/data_request" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhook/customers-redact"
+  compliance_topics = [ "customers/redact" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhook/shop-redact"
+  compliance_topics = [ "shop/redact" ]
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_products,write_products,read_themes"
+
+[auth]
+redirect_urls = [
+  "https://everything-locate-tourist-steering.trycloudflare.com/authenticate"
+]
+
+[app_proxy]
+url = "https://everything-locate-tourist-steering.trycloudflare.com/api/rulebase-proxy"
+subpath = "rule-limit-proxy"
+prefix = "a"
+
+[pos]
+embedded = false

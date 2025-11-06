@@ -1,0 +1,33 @@
+<script type="text/javascript" src="https://rulelimit.magecomp.net/theme-appextension/rule-limit-helper.js" async></script>
+
+<script>
+    var mcShopName = "{{ shop.permanent_domain }}";
+    var mcTemplate = "{{ template.name }}";
+
+    if (mcTemplate == 'product') {
+        var collectionIds = [];
+        {% for collection in product.collections %}
+          collectionIds.push({{ collection.id | append: '' }});
+         {% endfor %}
+         
+         var productMasterData = 
+          {
+            ...{{ product |  json }},
+            collection_id: collectionIds,  
+         };
+         
+    }
+    var mcInterval = setInterval(() => {
+        if (typeof MC_RULE_LIMIT !== "undefined") {
+            MC_RULE_LIMIT.initialize();
+            clearInterval(mcInterval);
+        }
+    }, 1000);
+    setTimeout(() => {
+        console.log("Rule Limit js Called");
+        if(typeof MC_RULE_LIMIT === "undefined") {
+            console.log("App is not loaded"); 
+        }
+        clearInterval(mcInterval);
+    }, 10000);
+</script>

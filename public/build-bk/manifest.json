@@ -1,0 +1,11 @@
+{
+  "resources/react/app.jsx": {
+    "file": "assets/app-RhcR-SqD.js",
+    "name": "app",
+    "src": "resources/react/app.jsx",
+    "isEntry": true,
+    "css": [
+      "assets/app-gAhHfke-.css"
+    ]
+  }
+}
