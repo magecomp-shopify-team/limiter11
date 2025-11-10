@@ -1,7 +1,9 @@
-import { Page, Layout, Card, Box } from "@shopify/polaris";
+import { Page, Layout, Card, Box, Button } from "@shopify/polaris";
 import GlobalRulesComponent from "../Components/RuleComponents/GlobalRulesComponent";
 import { useState } from "react";
 import AccessWarning from "../Components/AccessWarning/AccessWarning";
+import Footer from "../Components/Footer/Footer";
+import { NoteIcon } from '@shopify/polaris-icons';
 
 export default function Rules() {
 
@@ -15,7 +17,12 @@ export default function Rules() {
 
     return (
         <Page
-            title="Rule Limit Qty"
+            title="Rules"
+            titleMetadata={
+                <>
+                    <Button target="_blank" url="https://magecomp.gitbook.io/shopify/apps/limiter-order-limits/rules" icon={NoteIcon} variant="monochromePlain" size="large" />
+                </>
+            }
         >
             <Layout>
                 <Layout.Section>
@@ -28,6 +35,8 @@ export default function Rules() {
                             />
                         </AccessWarning>
                     </Card>
+
+                    <Footer />
                 </Layout.Section>
             </Layout>
         </Page>

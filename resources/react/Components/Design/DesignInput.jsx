@@ -1,6 +1,7 @@
 import { React, useState, useContext, } from "react";
 import { TextField, Box, Card, InlineGrid, Text, Button, } from "@shopify/polaris";
 import { DesignContext } from "../../Pages/customization";
+import McColorPicker from "../McColorPicker/McColorPicker";
 
 const DesignInput = () => {
 
@@ -20,27 +21,26 @@ const DesignInput = () => {
     return (
         <Card>
             <Text variant="headingMd">
-                Customize the design and it will be displayed in the store.
+                Adjust how the limit message looks on your storefront.
             </Text>
             <Box padding={200} />
             <InlineGrid columns={2} gap="400">
-                <TextField
-                    label="Model color"
-                    value={bgColor || '#ffffff'}
-                    onChange={(value) => handleChange("bgColor", value)}
-                    type="color"
+                <McColorPicker
+                    label={"Model color"}
+                    color={bgColor || '#ffffff'}
+                    setColor={(value) => handleChange("bgColor", value)}
+                    width="100%"
                 />
-                <TextField
+                <McColorPicker
                     label="Border color"
-                    value={borderColor || '#ffffff'}
-                    onChange={(value) => handleChange("borderColor", value)}
-                    type="color"
+                    color={borderColor || '#ffffff'}
+                    setColor={(value) => handleChange("borderColor", value)}
+                    width="100%"
                 />
-                <TextField
+                <McColorPicker
                     label="Font color"
-                    value={fontColor || '#808080'}
-                    onChange={(value) => handleChange("fontColor", value)}
-                    type="color"
+                    color={fontColor || '#ffffff'}
+                    setColor={(value) => handleChange("fontColor", value)}
                 />
                 <TextField
                     label="Font size"
@@ -63,7 +63,7 @@ const DesignInput = () => {
                     type="number"
                     suffix="px"
                 />
-               
+
             </InlineGrid>
         </Card>
     );

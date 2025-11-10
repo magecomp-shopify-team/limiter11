@@ -8,6 +8,7 @@ import {
     InlineStack,
     Text,
     Badge,
+    useBreakpoints,
 } from "@shopify/polaris";
 import {
     ChevronDownIcon,
@@ -21,6 +22,7 @@ import { themeAppUrl } from "../../app";
 import AccessWarning from "../AccessWarning/AccessWarning";
 
 export const Onboard = () => {
+    const { mdDown } = useBreakpoints();
     const [open, setOpen] = useState(true);
     const [appStatus, setAppStatus] = useState();
 
@@ -55,10 +57,7 @@ export const Onboard = () => {
                 <InlineStack align="space-between" blockAlign="center">
                     <Box>
                         <Text variant="headingMd" as="h4">
-                            Quick setup
-                        </Text>
-                        <Text variant="bodySm">
-                            Enable our app to see it visible on your store
+                            Quick start
                         </Text>
                     </Box>
                     <Box>
@@ -104,7 +103,7 @@ export const Onboard = () => {
                                     <Box>
                                         <InlineStack>
                                             <Text variant="headingMd" as="h4">
-                                                Active App
+                                                Activate App
                                             </Text>
                                             <Box paddingInlineStart={100}>
                                                 <Badge
@@ -113,13 +112,12 @@ export const Onboard = () => {
                                                             ? "success"
                                                             : "attention"
                                                     }>
-                                                    {appStatus ? "Enabled" : "Disabled"}
+                                                    {appStatus ? "On" : "Off"}
                                                 </Badge>
                                             </Box>
                                         </InlineStack>
                                         <Text variant="bodySm">
-                                            Enable our app to see it visible on
-                                            your store
+                                            Turn on the app to make it visible in your store
                                         </Text>
                                         <InlineStack paddingBlockStart={"200"}>
                                             <Button
@@ -151,16 +149,14 @@ export const Onboard = () => {
                                                 Create your first limit
                                             </Text>
                                             <Text variant="bodySm">
-                                                Establish your initial rule
-                                                effortlessly to set limits on
-                                                products, collections, etc...
+                                                Create the first rule to set limits on products, collections, and other items.
                                             </Text>
                                             <Button
                                                 variant="primary"
                                                 size="slim"
                                                 url={"/rules?q=initialRule"}
                                             >
-                                                Add first rule
+                                                Add rule
                                             </Button>
                                         </Box>
                                     </InlineStack>
@@ -168,22 +164,23 @@ export const Onboard = () => {
                             </AccessWarning>
 
                         </Grid.Cell>
-                        <Grid.Cell
-                            columnSpan={{
-                                xs: 6,
-                                sm: 6,
-                                md: 2,
-                                lg: 4,
-                                xl: 4,
-                            }}
-                        >
-                            <img
-                                src={"/assets/images/app-getting-Image.png"}
-                                alt="getting started"
-                                width="100%"
-                                height="auto"
-                            />
-                        </Grid.Cell>
+                        {!mdDown ?
+                            <Grid.Cell
+                                columnSpan={{
+                                    xs: 6,
+                                    sm: 6,
+                                    md: 2,
+                                    lg: 4,
+                                    xl: 4,
+                                }}
+                            >
+                                <img
+                                    src={"/assets/images/app-getting-Image.png"}
+                                    alt="getting started"
+                                    width="100%"
+                                    height="auto"
+                                />
+                            </Grid.Cell> : <></>}
                     </Grid>
                 </Collapsible>
             </Card>

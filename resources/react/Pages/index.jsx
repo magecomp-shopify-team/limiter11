@@ -2,14 +2,15 @@ import { Page, Layout, Card, Box } from "@shopify/polaris";
 import { Onboard } from "../Components/Onboard/Onboard";
 import { Documentation } from "../Components/Documentation/Documentation";
 import { HelpBox } from "../Components/HelpBox/HelpBox";
+import Footer from "../Components/Footer/Footer";
 
 export default function HomePage() {
     return (
-        <Page>
+        <Page title="LIMITER Order Limits">
             <Layout>
                 <Layout.Section>
                     <Onboard />
-                    <HelpBox title={"How It Works"}>
+                    {/* <HelpBox title={"How It Works"}>
                         <p>
                             The app works by checking and enforcing predefined
                             purchase limits on products, variants, and
@@ -29,8 +30,10 @@ export default function HomePage() {
                             enforces these limits at checkout, ensuring each
                             customer's cart complies with your defined rules.
                         </p>
-                    </HelpBox>
+                    </HelpBox> */}
                     <Documentation />
+
+                    <Footer />
                 </Layout.Section>
             </Layout>
         </Page>

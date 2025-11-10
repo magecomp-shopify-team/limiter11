@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { shop_data, planConfig } from "../../app";
 import { fetchApi } from "../../utils/api";
+import Footer from "../Footer/Footer";
 
 const PlanButton = ({ type = "month", plan, isFree }) => {
     const shopify = useAppBridge();
@@ -126,13 +127,12 @@ const PlanCard = ({ plan, activePlanId }) => {
                         </Text>
                         <InlineStack gap="200">
                             {isActive && <Badge tone="success">{"Active"}</Badge>}
-                            {!isActive && <Badge tone="warning">{"Inactive"}</Badge>}
                         </InlineStack>
                     </InlineStack>
                 </Box>
 
                 {/* Price */}
-                <Box paddingBlock="400">
+                <Box paddingBlockStart="400" paddingBlockEnd={"200"}>
                     {plan.isFree ? (
                         <PlanTitle isFree />
                     ) : (
@@ -142,6 +142,11 @@ const PlanCard = ({ plan, activePlanId }) => {
                         />
                     )}
                 </Box>
+                {plan?.trialDays ?
+                    <Box paddingBlockEnd={"200"}>
+                        <Badge tone="magic">{plan.trialDays} days trial</Badge>
+                    </Box>
+                    : <></>}
 
                 {/* Buttons */}
                 <Box paddingBlockEnd="400">
@@ -176,10 +181,11 @@ const PlanIndex = () => {
     const { shopify_freemium = false, plan_id = 0 } = shop_data;
     const planPairs = [
         {
-            name: "LIMITER_BASIC_PRO",
+            name: "BASIC",
             monthly: planConfig[1],
             yearly: planConfig[2],
             popular: true,
+            trialDays: 7,
             ids: [2, 3],
             features: [
                 "Unlimited rules access",
@@ -226,6 +232,8 @@ const PlanIndex = () => {
                             <PlanCard key={i} plan={plan} activePlanId={plan_id} />
                         ))}
                     </InlineStack>
+
+                    <Footer />
                 </Layout.Section>
             </Layout>
 

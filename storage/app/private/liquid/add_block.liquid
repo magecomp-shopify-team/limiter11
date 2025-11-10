@@ -1,0 +1,163 @@
+{% layout none %}
+{% assign mcVariantIds = '' %}
+{% assign mcProductIds = '' %}
+{% assign mcProductIdQty = '' %}
+{% assign mcProductIdArray = '' %}
+{% assign mcCollectionIds = '' %}
+
+{% for item in cart.items %}
+  {% assign item_quantity = item.quantity %}
+  {% comment %}
+    Variant Array prepare
+  {% endcomment %}
+  {% capture item_id %}{{ item.id }}{% endcapture %}
+
+  {% assign variant_data = '' %}
+  {% assign variant_data = variant_data | append: '"id": ' | append: item.id | append: ', ' %}
+  {% assign variant_data = variant_data | append: '"quantity": ' | append: item.quantity | append: ', ' %}
+
+  {% if item.title %}
+    {% assign variant_data = variant_data | append: '"title": "' | append: item.title | escape | append: '", ' %}
+  {% else %}
+    {% assign variant_data = variant_data | append: '"title": null,' %}
+  {% endif %}
+
+  {% if item.variant.title %}
+    {% assign variant_data = variant_data | append: '"variant_title": "' | append: item.variant.title | escape | append: '", ' %}
+  {% else %}
+    {% assign variant_data = variant_data | append: '"variant_title": null,' %}
+  {% endif %}
+
+  {% if item.sku %}
+    {% assign variant_data = variant_data | append: '"sku": "' | append: item.sku | append: '",' %}
+  {% else %}
+    {% assign variant_data = variant_data | append: '"sku": null,' %}
+  {% endif %}
+
+  {% assign variant_data = variant_data | append: '"price": "' | append: item.line_price | append: '",' %}
+
+  {% assign variant_data = variant_data | append: '"grams": "' | append: item.grams | append: '"' %}
+
+
+  {% if forloop.last %}
+    {% assign mcVariantIds = mcVariantIds | append: '{ ' | append: variant_data | append: ' } ' %}
+  {% else %}
+    {% assign mcVariantIds = mcVariantIds | append: '{ ' | append: variant_data | append: ' }, ' %}
+  {% endif %}
+
+  {% comment %}
+    Product Array prepare
+  {% endcomment %}
+  {% capture product_id %}{{ item.product_id }}{% endcapture %}
+
+  {% assign mcProductIdArray = mcProductIdArray | append: product_id | append: ',' %}
+  {% assign mcProductIdQty = mcProductIdQty | append: item_quantity | append: ',' %}
+
+  {% assign product_data = '' %}
+  {% assign product_data = product_data | append: '"id": ' | append: product_id | append: ', ' %}
+  {% assign product_data = product_data | append: '"quantity": ' | append: item.quantity | append: ', ' %}
+
+  {% if item.product.title %}
+    {% assign product_data = product_data
+      | append: '"title": "'
+      | append: item.product.title
+      | escape
+      | append: '", '
+    %}
+  {% else %}
+    {% assign product_data = product_data | append: '"title": null,' %}
+  {% endif %}
+
+  {% assign product_data = product_data | append: '"tags": ' | append: item.product.tags | append: ', ' %}
+  {% assign product_data = product_data | append: '"handle": "' | append: item.product.handle | append: '",' %}
+  {% assign product_data = product_data | append: '"vendor": "' | append: item.product.vendor | append: '",' %}
+  {% assign product_data = product_data | append: '"grams": "' | append: item.grams | append: '",' %}
+  {% assign product_data = product_data | append: '"price": "' | append: item.price | append: '",' %}
+  {% if item.product.type %}
+    {% assign product_data = product_data | append: '"type": "' | append: item.product.type | append: '",' %}
+  {% else %}
+  {% assign product_data = product_data | append: '"type": null' | append: ',' %}
+  {% endif %}
+
+  {% if item.sku %}
+    {% assign product_data = product_data | append: '"sku": "' | append: item.sku | append: '"' %}
+  {% else %}
+    {% assign product_data = product_data | append: '"sku": null' %}
+  {% endif %}
+  {% if forloop.last %}
+    {% assign mcProductIds = mcProductIds | append: '{ ' | append: product_data | append: ' } ' %}
+  {% else %}
+    {% assign mcProductIds = mcProductIds | append: '{ ' | append: product_data | append: ' }, ' %}
+  {% endif %}
+
+  {% comment %}
+    Collection Array prepare
+  {% endcomment %}
+
+  {% if forloop.last %}
+    {% assign isLastIndex = true %}
+  {% else %}
+    {% assign isLastIndex = false %}
+  {% endif %}
+
+  {% assign isLastIndexNotUsed = true %}
+  {% for collect in item.product.collections %}
+    {% capture collection_id %}{{ collect.id }}{% endcapture %}
+    {% assign collection_data = '' %}
+
+    {% assign collection_data = collection_data | append: '"id": ' | append: collection_id | append: ', ' %}
+    {% assign collection_data = collection_data | append: '"quantity": ' | append: item.quantity | append: ', ' %}
+
+    {% if collect.title %}
+      {% assign collection_data = collection_data
+        | append: '"title": "'
+        | append: collect.title
+        | escape
+        | append: '" '
+      %}
+    {% else %}
+      {% assign collection_data = collection_data | append: '"title": null' %}
+    {% endif %}
+      {% assign mcCollectionIds = mcCollectionIds | append: '{ ' | append: collection_data | append: ' }, ' %}
+  {% endfor %}
+
+  {% if forloop.last %}
+    {% assign mcCollectionIds = mcCollectionIds | strip %}
+    {% if mcCollectionIds contains ',' %}
+      {% assign last_comma_index = mcCollectionIds | size | minus: 1 %}
+      {% assign before_last_comma = mcCollectionIds | slice: 0, last_comma_index %}
+      {% assign last_character = mcCollectionIds | slice: last_comma_index, 1 %}
+
+      {% if last_character == ',' %}
+        {% assign mcCollectionIds = before_last_comma %}
+      {% else %}
+        {% assign mcCollectionIds = mcCollectionIds %}
+      {% endif %}
+    {% else %}
+      {% assign mcCollectionIds = mcCollectionIds %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% assign mcCustomerData = "{}" %}
+{% if customer %}
+{% assign mcCustomerData = "" %}
+  {% assign customer_data = '' %}
+
+  {% assign customer_data = customer_data | append: '"id": ' | append: customer.id | append: ', ' %}
+  {% assign customer_data = customer_data | append: '"name": "' | append: customer.first_name |  append: ' ' | append: customer.last_name | append:  '", '  %}
+  {% assign customer_data = customer_data | append: '"email": "' | append: customer.email | append:  '", '  %}
+  {% assign customer_data = customer_data | append: '"tags": ' | append: customer.tags | append: ' ' %}
+
+  {% assign mcCustomerData = mcCustomerData | append: '{ ' | append: customer_data | append: ' } ' %}
+
+{% endif %}
+
+{
+  "cart": {{ cart |  json }},
+  "variantData": [{{ mcVariantIds }}],
+  "productData": [{{ mcProductIds }}],
+  "collectionData": [{{ mcCollectionIds }}],
+  "customerData": {{ mcCustomerData }},
+  "rules": {*rules*},
+  "designcode": {*designcode*}
+}

@@ -1,7 +1,9 @@
-import { BlockStack, Box, Button, Card, Divider, InlineGrid, Page, Text, TextField, useBreakpoints } from "@shopify/polaris";
+import { BlockStack, Box, Button, Card, Divider, InlineGrid, Layout, Page, Text, TextField, useBreakpoints } from "@shopify/polaris";
 import { useEffect, useState } from "react";
 import { useAppBridge } from '@shopify/app-bridge-react';
 import { fetchApi } from "../utils/api";
+import Footer from "../Components/Footer/Footer";
+import { NoteIcon } from '@shopify/polaris-icons';
 
 const Settings = () => {
     const [limitStatus, setLimitStatus] = useState(true);
@@ -40,31 +42,41 @@ const Settings = () => {
         <Page
             divider
             title="Settings"
+            titleMetadata={
+                <>
+                    <Button target="_blank" url="https://magecomp.gitbook.io/shopify/apps/limiter-order-limits/settings" icon={NoteIcon} variant="monochromePlain" size="large" />
+                </>
+            }
         >
-            <BlockStack gap={{ xs: "800", sm: "400" }}>
-                <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
-                    <Box
-                        as="section"
-                        paddingInlineStart={{ xs: 400, sm: 0 }}
-                        paddingInlineEnd={{ xs: 400, sm: 0 }}
-                    >
-                        <BlockStack gap="400">
-                            <Text as="h3" variant="headingMd">
-                                Toggle Limit Publish Status
-                            </Text>
-                            <Text as="p" variant="bodyMd">
-                                Easily manage the publishing limit for your online store
-                            </Text>
-                        </BlockStack>
-                    </Box>
-                    <Card roundedAbove="sm">
-                        <Text as="p" variant="bodyMd" >
-                            Current status: Your limit is currently <Text fontWeight="bold" as="span" tone={limitStatus ? "success" : "critical"}>{limitStatus ? 'published' : 'unpublished'}</Text> on the store.
-                        </Text>
-                        <Button variant={limitStatus ? "secondary" : "primary"} tone={limitStatus ? "critical" : ""} onClick={handleLimit}>{limitStatus ? 'Unpublish' : 'Publish'}</Button>
-                    </Card>
-                </InlineGrid>
-            </BlockStack>
+            <Layout>
+                <Layout.Section>
+                    <BlockStack gap={{ xs: "800", sm: "400" }}>
+                        <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
+                            <Box
+                                as="section"
+                                paddingInlineStart={{ xs: 400, sm: 0 }}
+                                paddingInlineEnd={{ xs: 400, sm: 0 }}
+                            >
+                                <BlockStack gap="400">
+                                    <Text as="h3" variant="headingMd">
+                                        Limit Publish Status
+                                    </Text>
+                                    <Text as="p" variant="bodyMd">
+                                        Easily control whether your limit is visible on your store.
+                                    </Text>
+                                </BlockStack>
+                            </Box>
+                            <Card roundedAbove="sm">
+                                <Text as="p" variant="bodyMd" >
+                                    {limitStatus ? <>Your limit is <Text fontWeight="bold" as="span" tone={"success"}>published</Text> on your store.</> : <>Your limit is <Text fontWeight="bold" as="span" tone={"caution"}>hidden</Text> from your store.</>}
+                                </Text>
+                                <Button variant={limitStatus ? "secondary" : "primary"} tone={limitStatus ? "critical" : ""} onClick={handleLimit}>{limitStatus ? 'Unpublish' : 'Publish'}</Button>
+                            </Card>
+                        </InlineGrid>
+                    </BlockStack>
+                    <Footer />
+                </Layout.Section>
+            </Layout>
         </Page>
     )
 }

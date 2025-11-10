@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useState, createContext } from "react";
-import { Page, Grid, Badge } from "@shopify/polaris";
+import { Page, Grid, Badge, Layout } from "@shopify/polaris";
 import DesignInput from "../Components/Design/DesignInput";
 import DesignPreview from "../Components/Design/DesignPreview";
 import { deepEqual, fetchApi } from "../utils/api";
 import { SaveBar, useAppBridge } from '@shopify/app-bridge-react';
 import AccessWarning from "../Components/AccessWarning/AccessWarning";
+import CartPreview from "../Components/CartPreview/CartPreview";
+import Footer from "../Components/Footer/Footer";
 
 const designDefaultData = {
     fontSize: "15",
@@ -41,6 +43,7 @@ const Customization = () => {
             } else {
                 console.log("Design not found");
                 setDesignModal(designDefaultData);
+                setOldDesignData(designDefaultData);
             }
         }
         catch (error) {
@@ -93,24 +96,34 @@ const Customization = () => {
             title="Customization"
         >
             <SaveBar id="design-data">
-                <button
-                    variant="primary"
-                    onClick={handleSubmit}
-                ></button>
+                <button variant="primary" onClick={handleSubmit}></button>
                 <button onClick={handleDiscard}></button>
             </SaveBar>
-            <AccessWarning>
-                <Grid>
-                    <DesignContext.Provider value={{ designModal, setDesignModal }}>
-                        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 6 }}>
-                            <DesignInput />
-                        </Grid.Cell>
-                        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 8, xl: 6 }}>
-                            <DesignPreview />
-                        </Grid.Cell>
-                    </DesignContext.Provider>
-                </Grid>
-            </AccessWarning>
+            <Layout>
+                <Layout.Section>
+                    <AccessWarning>
+                        <DesignContext.Provider value={{ designModal, setDesignModal }}>
+                            <Layout>
+                                <Layout.Section variant="oneThird">
+                                    <DesignInput />
+                                </Layout.Section>
+                                <Layout.Section variant="oneHalf">
+                                    <CartPreview isQty={true} minQty={2} maxQty={3} maxQtyMsg={"You can not purchase more then qty"} minQtyMsg={"You need to purchase more then qty"} />
+                                </Layout.Section>
+                            </Layout>
+                            {/* <Grid>
+                                <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 6 }}>
+                                </Grid.Cell>
+                                <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 8, xl: 6 }}>
+                                    <CartPreview isQty={true} minQty={2} maxQty={3} maxQtyMsg={"You can not purchase more then qty"} minQtyMsg={"You need to purchase more then qty"} />
+                                </Grid.Cell>
+                            </Grid> */}
+                        </DesignContext.Provider>
+                    </AccessWarning>
+
+                    <Footer />
+                </Layout.Section>
+            </Layout>
         </Page >
     )
 }
