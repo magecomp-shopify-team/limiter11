@@ -1,6 +1,6 @@
 import { BlockStack, Box, Button, Card, InlineStack, Link, Text, TextField } from "@shopify/polaris"
 import { MenuHorizontalIcon } from "@shopify/polaris-icons"
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 
 export const ConditionFilterOptionComponent = ({ options, handleFilterChange }) => {
     const [openProductPicker, setOpenProductPicker] = useState(false);
